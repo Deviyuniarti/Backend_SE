@@ -6,16 +6,18 @@ use Illuminate\Http\Request;
 
 class AnimalController extends Controller
 {
-    public $animals = ['Beruang', 'Bebek'];
-    public function index(){ 
+    public $animals = ['Anjing', 'Kelinci'];
+    public function index()
+    {
         echo "Menampilkan data animals <br>";
 
         //loop property animals
-        foreach($this->animals as $animal)
-        echo "-$animal <br>";
+        foreach ($this->animals as $animal)
+            echo "-$animal <br>";
     }
 
-    public function store(request $request){
+    public function store(Request $request)
+    {
         echo "Menambahkan hewan baru <br>";
 
         array_push($this->animals, $request->animal);
@@ -24,9 +26,9 @@ class AnimalController extends Controller
         $this->index();
     }
 
-    public function update($id, Request $request){
+    public function update($id, Request $request)
+    {
         echo "Mengupdate data hewan id $id. <br>";
-
         // update data di property animals
         $this->animals[$id] = $request->animal;
 
@@ -34,7 +36,8 @@ class AnimalController extends Controller
         $this->index();
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         echo "Menghapus data hewan id $id. <br>";
 
         unset($this->animals[$id]);
