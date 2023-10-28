@@ -29,7 +29,7 @@ class AnimalController extends Controller
     public function update($id, Request $request)
     {
         echo "Mengupdate data hewan id $id. <br>";
-        // update data di property animals
+        // update data di property animals 
         $this->animals[$id] = $request->animal;
 
         // panggil method index
