@@ -11,6 +11,16 @@ class StudentController extends Controller
     {
         $students = Student::all();
 
+        //jika data kosong maka kirim status code 204
+        if ($students->isEmpty()){
+            $data = [
+                'message' => 'Resource is empty'
+            ];
+
+            return response()->json($data,204);
+
+        }
+
         $data = [
             "message" => "Get all Student",
             "data" => $students
@@ -22,7 +32,15 @@ class StudentController extends Controller
 
     //membuat method store
     public function store(Request $request)
-    {
+    {   
+        //validasi data request
+        $request->validate([
+            "nama"=> "required",
+            "nim"=> "required",
+            "email"=> "required|email",
+            "jurusan"=> "required",
+        ]);
+
         //menangkap data request
         $input = [
             'nama' => $request->nama,
@@ -48,23 +66,23 @@ class StudentController extends Controller
         // Temukan siswa berdasarkan ID
         $student = Student::find($id);
 
-        // Jika siswa tidak ditemukan, kembalikan respons error
-        if (!$student) {
+        //jika data yang dicari tidak ada, kirim kode 404 
+        if(!$student){
             $data = [
-                'message' => "Student not found",
+                "message" => "Data not found"
             ];
             return response()->json($data, 404);
         }
 
-        // Update data siswa
-        $student->nama = $request->input('nama');
-        $student->nim = $request->input('nim');
-        $student->email = $request->input('email');
-        $student->jurusan = $request->input('jurusan');
-        $student->save(); 
-
+        $student->update([
+            'nama'=> $request->nama ?? $student->nama,
+            'nim'=> $request->nim ?? $student->nim,
+            'email'=> $request->email ?? $student->email,
+            'jurusan'=> $request->jurusan ?? $student->jurusan,
+        ]);
+        
         $data = [
-            'message' => "Student updated successfully",
+            'message' => "Data is updated",
             'data' => $student,
         ];
 
@@ -76,6 +94,7 @@ class StudentController extends Controller
     {
         $student = Student::find($id);
 
+        //jika data yang dicari tidak ada, kirim kode 404
         if (!$student) {
             $data = [
                 'message' => "Student not found",
@@ -91,4 +110,23 @@ class StudentController extends Controller
 
         return response()->json($data, 203);
     }
-};
+
+    public function show($id){
+        $student = Student::find($id);
+        //jika data yang dicari tidak ada, kirim kode 404
+        if (!$student) {
+            $data = [
+                'message' => "Student not found",
+            ];
+            return response()->json($data, 404);
+        }
+        $data = [
+            'message' => "show details of students",
+            'data' => $student,
+        ];
+
+        return response()->json($data, 200);
+    }
+}
+
+    
