@@ -33,11 +33,12 @@ class StudentController extends Controller
     //membuat method store
     public function store(Request $request)
     {   
+      
         //validasi data request
-        $request->validate([
+        $validateData= $request->validate([
             "nama"=> "required",
-            "nim"=> "required",
-            "email"=> "required|email",
+            "nim"=> "numeric | required",
+            "email"=> "email | required",
             "jurusan"=> "required",
         ]);
 
